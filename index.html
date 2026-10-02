@@ -1,0 +1,1552 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+<title>Meduza — Sen uchun</title>
+
+<style>
+*{
+    box-sizing:border-box;
+    -webkit-tap-highlight-color:transparent;
+}
+
+html,body{
+    margin:0;
+    width:100%;
+    height:100%;
+    overflow:hidden;
+    background:#07100d;
+    color:#fff;
+    font-family:
+        -apple-system,
+        BlinkMacSystemFont,
+        "SF Pro Display",
+        "SF Pro Text",
+        Inter,
+        Arial,
+        sans-serif;
+}
+
+body{
+    position:relative;
+}
+
+.background{
+    position:fixed;
+    inset:0;
+    z-index:-10;
+
+    /* Birinchi rasm orqa fon sifatida kiritildi */
+    background-image:
+        linear-gradient(
+            180deg,
+            rgba(0,0,0,.35),
+            rgba(0,0,0,.55) 45%,
+            rgba(0,0,0,.80)
+        ),
+        url("bg.jpg");
+
+    background-size:cover;
+    background-position:center;
+    background-repeat:no-repeat;
+
+    transform:scale(1.04);
+
+    animation:
+        slowCamera 18s ease-in-out infinite alternate;
+}
+
+@keyframes slowCamera{
+    from{
+        transform:scale(1.04);
+    }
+
+    to{
+        transform:scale(1.10);
+    }
+}
+
+.overlay{
+    position:fixed;
+    inset:0;
+    z-index:-9;
+    pointer-events:none;
+
+    background:
+        radial-gradient(
+            circle at 50% 38%,
+            rgba(0,0,0,0) 0%,
+            rgba(0,0,0,.15) 40%,
+            rgba(0,0,0,.70) 100%
+        );
+}
+
+.app{
+    position:relative;
+    width:100%;
+    height:100%;
+}
+
+.top{
+    position:absolute;
+    top:0;
+    left:0;
+    right:0;
+    z-index:20;
+
+    padding:
+        calc(17px + env(safe-area-inset-top))
+        20px 12px;
+
+    display:flex;
+    justify-content:space-between;
+}
+
+.logo,
+.counter{
+    font-size:12px;
+    letter-spacing:.15em;
+    color:rgba(255,255,255,.7);
+}
+
+.screen{
+    position:absolute;
+    inset:0;
+
+    padding:
+        90px 22px
+        calc(75px + env(safe-area-inset-bottom));
+
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+
+    opacity:0;
+    visibility:hidden;
+    pointer-events:none;
+
+    transform:translateY(20px);
+
+    transition:.55s ease;
+}
+
+.screen.active{
+    opacity:1;
+    visibility:visible;
+    pointer-events:auto;
+    transform:none;
+}
+
+.eyebrow{
+    font-size:11px;
+    letter-spacing:.2em;
+    text-transform:uppercase;
+
+    color:rgba(255,255,255,.58);
+
+    margin-bottom:17px;
+}
+
+h1{
+    font-size:clamp(35px,10vw,60px);
+    line-height:1.02;
+    letter-spacing:-.05em;
+
+    margin:0 0 22px;
+
+    text-shadow:
+        0 5px 30px rgba(0,0,0,.5);
+}
+
+h2{
+    font-size:clamp(27px,7.5vw,44px);
+    line-height:1.05;
+    letter-spacing:-.04em;
+
+    margin:0 0 20px;
+}
+
+.text,
+.story p{
+    font-size:16px;
+    line-height:1.6;
+
+    color:rgba(255,255,255,.88);
+
+    text-shadow:
+        0 2px 12px rgba(0,0,0,.7);
+}
+
+.story{
+    max-width:680px;
+
+    border-left:
+        1px solid
+        rgba(255,255,255,.45);
+
+    padding-left:19px;
+}
+
+.story p{
+    margin:0 0 13px;
+}
+
+.actions{
+    display:flex;
+    flex-wrap:wrap;
+
+    gap:9px;
+
+    margin-top:22px;
+}
+
+button{
+    border:
+        1px solid
+        rgba(255,255,255,.3);
+
+    background:
+        rgba(255,255,255,.12);
+
+    color:#fff;
+
+    padding:
+        12px 18px;
+
+    border-radius:999px;
+
+    font-family:inherit;
+    font-size:14px;
+
+    backdrop-filter:blur(14px);
+    -webkit-backdrop-filter:blur(14px);
+
+    transition:.2s ease;
+    cursor:pointer;
+}
+
+button:active{
+    transform:scale(.94);
+
+    background:
+        rgba(255,255,255,.22);
+}
+
+.btn-back{
+    border-color: rgba(255,255,255,.18);
+    background: rgba(0,0,0,.35);
+    color: rgba(255,255,255,.75);
+}
+
+.question{
+    font-size:
+        clamp(24px,6.8vw,38px);
+
+    line-height:1.1;
+    letter-spacing:-.035em;
+
+    margin-bottom:20px;
+}
+
+.input{
+    width:100%;
+    max-width:650px;
+
+    min-height:54px;
+
+    padding:
+        15px 17px;
+
+    border:
+        1px solid
+        rgba(255,255,255,.3);
+
+    border-radius:18px;
+
+    outline:none;
+
+    background:
+        rgba(0,0,0,.35);
+
+    color:#fff;
+
+    font-family:inherit;
+    font-size:16px;
+
+    backdrop-filter:blur(14px);
+    -webkit-backdrop-filter:blur(14px);
+}
+
+.input::placeholder{
+    color:
+        rgba(255,255,255,.45);
+}
+
+.typing{
+    min-height:60px;
+}
+
+.cursor{
+    display:inline-block;
+
+    width:2px;
+    height:1em;
+
+    background:#fff;
+
+    vertical-align:-2px;
+
+    animation:
+        blink .8s infinite;
+}
+
+@keyframes blink{
+    50%{
+        opacity:0;
+    }
+}
+
+.progress{
+    position:absolute;
+
+    left:20px;
+    right:20px;
+
+    bottom:
+        calc(22px + env(safe-area-inset-bottom));
+
+    height:2px;
+
+    z-index:20;
+
+    background:
+        rgba(255,255,255,.18);
+}
+
+.bar{
+    height:100%;
+    width:0;
+
+    background:#fff;
+
+    transition:.5s;
+}
+
+.photo{
+    width:100%;
+    max-width:440px;
+
+    margin:
+        0 auto 20px;
+}
+
+.photo img{
+    display:block;
+
+    width:100%;
+
+    max-height:48vh;
+
+    object-fit:cover;
+
+    border-radius:25px;
+
+    box-shadow:
+        0 25px 65px
+        rgba(0,0,0,.65);
+}
+
+.final{
+    text-align:center;
+    align-items:center;
+}
+
+.final .text{
+    text-align:center;
+}
+
+.heart{
+    width:60px;
+    height:60px;
+
+    background:#fff;
+
+    transform:rotate(-45deg);
+
+    margin:
+        0 auto 30px;
+
+    animation:
+        pulse 1.7s infinite;
+
+    position:relative;
+}
+
+.heart:before,
+.heart:after{
+    content:"";
+
+    position:absolute;
+
+    width:60px;
+    height:60px;
+
+    background:#fff;
+
+    border-radius:50%;
+}
+
+.heart:before{
+    top:-30px;
+    left:0;
+}
+
+.heart:after{
+    left:30px;
+    top:0;
+}
+
+@keyframes pulse{
+    50%{
+        transform:
+            rotate(-45deg)
+            scale(1.12);
+    }
+}
+
+.small{
+    font-size:12px;
+
+    color:
+        rgba(255,255,255,.6);
+
+    margin-top:22px;
+}
+
+@media(max-width:520px){
+
+    .text,
+    .story p{
+        font-size:15px;
+    }
+
+    button{
+        padding:10px 15px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div class="background"></div>
+<div class="overlay"></div>
+
+<div class="top">
+    <div class="logo">
+        Meduza — sen uchun
+    </div>
+
+    <div class="counter" id="counter">
+        01
+    </div>
+</div>
+
+
+<!-- 1 -->
+
+<section class="screen active">
+
+    <div class="eyebrow">
+        faqat sen uchun
+    </div>
+
+    <h1>
+        Meduza,<br>
+        seni borliging uchun<br>
+        Allohimga behisob shukur.
+    </h1>
+
+    <div class="story">
+
+        <p>
+            Ba'zi insonlar hayotga shunchaki kirib keladi.
+            Ba'zilari esa kelganidan keyin hayotning
+            ma'nosini biroz boshqacha qilib qo‘yadi.
+        </p>
+
+        <p>
+            Sen men uchun shunday insonlardan birisan.
+        </p>
+
+        <p>
+            Balki buni har doim chiroyli so‘zlar bilan
+            ayta olmasman.
+            Lekin borliging men uchun oddiy narsa emas.
+        </p>
+
+    </div>
+
+    <div class="actions">
+
+        <button onclick="next()">
+            Davom etish →
+        </button>
+
+    </div>
+
+</section>
+
+
+<!-- 2 -->
+
+<section class="screen">
+
+    <div class="eyebrow">
+        boshlashdan oldin
+    </div>
+
+    <h2>
+        Senga bir nechta
+        savolim bor.
+    </h2>
+
+    <div
+        class="text typing"
+        id="typing">
+    </div>
+
+    <div class="actions">
+
+        <button class="btn-back" onclick="prev()">
+            ← Orqaga
+        </button>
+
+        <button onclick="next()">
+            Boshlayver 😄
+        </button>
+
+    </div>
+
+</section>
+
+
+<!-- 3: SAVOL 01 -->
+
+<section class="screen">
+
+    <div class="eyebrow">
+        SAVOL 01 / 15
+    </div>
+
+    <div class="question">
+        Menda birinchi bo‘lib
+        nimani sezgansan?
+    </div>
+
+    <input
+        class="input"
+        id="q1"
+        placeholder="O‘zing xohlagancha yoz..."
+    >
+
+    <div class="actions">
+
+        <button class="btn-back" onclick="prev()">
+            ← Orqaga
+        </button>
+
+        <button onclick="saveInput('q1', '1. Menda birinchi bo‘lib nimani sezgansan?')">
+            Keyingisi →
+        </button>
+
+    </div>
+
+</section>
+
+
+<!-- 4: SAVOL 02 -->
+
+<section class="screen">
+
+    <div class="eyebrow">
+        SAVOL 02 / 15
+    </div>
+
+    <div class="question">
+        Men bilan gaplashganda
+        kayfiyating qanday bo‘ladi?
+    </div>
+
+    <div class="actions">
+
+        <button onclick="chooseOption('2. Kayfiyating qanday bo‘ladi?', '😂 Kulaman')">
+            😂 Kulaman
+        </button>
+
+        <button onclick="chooseOption('2. Kayfiyating qanday bo‘ladi?', '🤍 Xotirjam')">
+            🤍 Xotirjam
+        </button>
+
+        <button onclick="chooseOption('2. Kayfiyating qanday bo‘ladi?', '🙈 Uyatchan')">
+            🙈 Uyatchan
+        </button>
+
+        <button onclick="chooseOption('2. Kayfiyating qanday bo‘ladi?', 'Har xil')">
+            Har xil
+        </button>
+
+        <button class="btn-back" onclick="prev()">
+            ← Orqaga
+        </button>
+
+    </div>
+
+</section>
+
+
+<!-- 5: SAVOL 03 -->
+
+<section class="screen">
+
+    <div class="eyebrow">
+        SAVOL 03 / 15
+    </div>
+
+    <div class="question">
+        Menda seni kuldiradigan
+        narsa nima?
+    </div>
+
+    <input
+        class="input"
+        id="q3"
+        placeholder="Biror narsani yoz..."
+    >
+
+    <div class="actions">
+
+        <button class="btn-back" onclick="prev()">
+            ← Orqaga
+        </button>
+
+        <button onclick="saveInput('q3', '3. Menda seni kuldiradigan narsa nima?')">
+            Saqlash →
+        </button>
+
+    </div>
+
+</section>
+
+
+<!-- 6: SAVOL 04 -->
+
+<section class="screen">
+
+    <div class="eyebrow">
+        SAVOL 04 / 15
+    </div>
+
+    <div class="question">
+        Agar bugun birga vaqt
+        o‘tkazsak, qayerga borardik?
+    </div>
+
+    <div class="actions">
+
+        <button onclick="chooseOption('4. Qayerga borardik?', '🌿 Tabiat')">
+            🌿 Tabiat
+        </button>
+
+        <button onclick="chooseOption('4. Qayerga borardik?', '🌃 Shahar')">
+            🌃 Shahar
+        </button>
+
+        <button onclick="chooseOption('4. Qayerga borardik?', '🌙 Sokin joy')">
+            🌙 Sokin joy
+        </button>
+
+        <button onclick="chooseOption('4. Qayerga borardik?', 'Bilmayman 😄')">
+            Bilmayman 😄
+        </button>
+
+        <button class="btn-back" onclick="prev()">
+            ← Orqaga
+        </button>
+
+    </div>
+
+</section>
+
+
+<!-- 7: SAVOL 05 -->
+
+<section class="screen">
+
+    <div class="eyebrow">
+        SAVOL 05 / 15
+    </div>
+
+    <div class="question">
+        Mendan eshitishni
+        xohlaydigan gaping bormi?
+    </div>
+
+    <input
+        class="input"
+        id="q5"
+        placeholder="Ichingdagini yoz..."
+    >
+
+    <div class="actions">
+
+        <button class="btn-back" onclick="prev()">
+            ← Orqaga
+        </button>
+
+        <button onclick="saveInput('q5', '5. Mendan eshitishni xohlaydigan gaping bormi?')">
+            Yozdim →
+        </button>
+
+    </div>
+
+</section>
+
+
+<!-- 8: SAVOL 06 -->
+
+<section class="screen">
+
+    <div class="eyebrow">
+        SAVOL 06 / 15
+    </div>
+
+    <div class="question">
+        Kelajak haqida o‘ylaganda
+        senga nima muhim?
+    </div>
+
+    <div class="actions">
+
+        <button onclick="chooseOption('6. Kelajakda nima muhim?', 'Ishonch')">
+            Ishonch
+        </button>
+
+        <button onclick="chooseOption('6. Kelajakda nima muhim?', 'Birga bo‘lish')">
+            Birga bo‘lish
+        </button>
+
+        <button onclick="chooseOption('6. Kelajakda nima muhim?', 'Baxt')">
+            Baxt
+        </button>
+
+        <button onclick="chooseOption('6. Kelajakda nima muhim?', 'Hammasi 🤍')">
+            Hammasi 🤍
+        </button>
+
+        <button class="btn-back" onclick="prev()">
+            ← Orqaga
+        </button>
+
+    </div>
+
+</section>
+
+
+<!-- 9: SAVOL 07 -->
+
+<section class="screen">
+
+    <div class="eyebrow">
+        SAVOL 07 / 15
+    </div>
+
+    <div class="question">
+        Meni uchta so‘z bilan
+        qanday tariflaysan?
+    </div>
+
+    <input
+        class="input"
+        id="q7"
+        placeholder="Uchta so‘z..."
+    >
+
+    <div class="actions">
+
+        <button class="btn-back" onclick="prev()">
+            ← Orqaga
+        </button>
+
+        <button onclick="saveInput('q7', '7. Meni uchta so‘z bilan tarifla')">
+            Qiziq... →
+        </button>
+
+    </div>
+
+</section>
+
+
+<!-- 10: SAVOL 08 -->
+
+<section class="screen">
+
+    <div class="eyebrow">
+        SAVOL 08 / 15
+    </div>
+
+    <div class="question">
+        Agar men bir kun jim
+        bo‘lib qolsam, nima qilarding?
+    </div>
+
+    <div class="actions">
+
+        <button onclick="chooseOption('8. Jim bo‘lib qolsam nima qilarding?', 'Yozardim')">
+            Yozardim
+        </button>
+
+        <button onclick="chooseOption('8. Jim bo‘lib qolsam nima qilarding?', 'Qo‘ng‘iroq qilardim')">
+            Qo‘ng‘iroq qilardim
+        </button>
+
+        <button onclick="chooseOption('8. Jim bo‘lib qolsam nima qilarding?', 'Kutardim')">
+            Kutardim
+        </button>
+
+        <button onclick="chooseOption('8. Jim bo‘lib qolsam nima qilarding?', 'Jahlim chiqardi 😄')">
+            Jahlim chiqardi 😄
+        </button>
+
+        <button class="btn-back" onclick="prev()">
+            ← Orqaga
+        </button>
+
+    </div>
+
+</section>
+
+
+<!-- 11: SAVOL 09 -->
+
+<section class="screen">
+
+    <div class="eyebrow">
+        SAVOL 09 / 15
+    </div>
+
+    <div class="question">
+        Menga aytishga uyaladigan
+        biror gaping bormi?
+    </div>
+
+    <input
+        class="input"
+        id="q9"
+        placeholder="Bu joy faqat sen uchun..."
+    >
+
+    <div class="actions">
+
+        <button class="btn-back" onclick="prev()">
+            ← Orqaga
+        </button>
+
+        <button onclick="saveInput('q9', '9. Menga aytishga uyaladigan gaping bormi?')">
+            Yozdim →
+        </button>
+
+    </div>
+
+</section>
+
+
+<!-- 12: SAVOL 10 -->
+
+<section class="screen">
+
+    <div class="eyebrow">
+        SAVOL 10 / 15
+    </div>
+
+    <div class="question">
+        Birga kofe ichsak, qaysi faslni tanlagan bo'lardik?
+    </div>
+
+    <div class="actions">
+
+        <button onclick="chooseOption('10. Kofe ichish uchun fasl', '🍂 Sokin kuz')">
+            🍂 Sokin kuz
+        </button>
+
+        <button onclick="chooseOption('10. Kofe ichish uchun fasl', '❄️ Izg\'irin qish')">
+            ❄️ Izg'irin qish
+        </button>
+
+        <button onclick="chooseOption('10. Kofe ichish uchun fasl', '🌸 Iliq bahor')">
+            🌸 Iliq bahor
+        </button>
+
+        <button onclick="chooseOption('10. Kofe ichish uchun fasl', '☀️ Yozgi oqshom')">
+            ☀️ Yozgi oqshom
+        </button>
+
+        <button class="btn-back" onclick="prev()">
+            ← Orqaga
+        </button>
+
+    </div>
+
+</section>
+
+
+<!-- 13: SAVOL 11 -->
+
+<section class="screen">
+
+    <div class="eyebrow">
+        SAVOL 11 / 15
+    </div>
+
+    <div class="question">
+        Arazlab qolsang, seni tezroq yozishimga nima sabab bo'ladi?
+    </div>
+
+    <div class="actions">
+
+        <button onclick="chooseOption('11. Arazlaganda nima yarashtiradi?', 'Shirin so\'zlar 🍬')">
+            Shirin so'zlar 🍬
+        </button>
+
+        <button onclick="chooseOption('11. Arazlaganda nima yarashtiradi?', 'Kutilmagan sovg\'a 🎁')">
+            Kutilmagan sovg'a 🎁
+        </button>
+
+        <button onclick="chooseOption('11. Arazlaganda nima yarashtiradi?', 'Samimiy kechirim 🙏')">
+            Samimiy kechirim 🙏
+        </button>
+
+        <button onclick="chooseOption('11. Arazlaganda nima yarashtiradi?', 'E\'tibor va vaqt ⏳')">
+            E'tibor va vaqt ⏳
+        </button>
+
+        <button class="btn-back" onclick="prev()">
+            ← Orqaga
+        </button>
+
+    </div>
+
+</section>
+
+
+<!-- 14: SAVOL 12 -->
+
+<section class="screen">
+
+    <div class="eyebrow">
+        SAVOL 12 / 15
+    </div>
+
+    <div class="question">
+        Ikkalamizning eng o'xshash xarakterimiz qaysi deb o'ylaysan?
+    </div>
+
+    <div class="actions">
+
+        <button onclick="chooseOption('12. O\'xshash xarakterimiz', 'O\'juqlik / Qaysarlik 😜')">
+            O'juqlik / Qaysarlik 😜
+        </button>
+
+        <button onclick="chooseOption('12. O\'xshash xarakterimiz', 'Samimiylik va mehir 🤍')">
+            Samimiylik va mehir 🤍
+        </button>
+
+        <button onclick="chooseOption('12. O\'xshash xarakterimiz', 'Tez arazlash 🙈')">
+            Tez arazlash 🙈
+        </button>
+
+        <button onclick="chooseOption('12. O\'xshash xarakterimiz', 'Hazilkashlik 😁')">
+            Hazilkashlik 😁
+        </button>
+
+        <button class="btn-back" onclick="prev()">
+            ← Orqaga
+        </button>
+
+    </div>
+
+</section>
+
+
+<!-- 15: SAVOL 13 -->
+
+<section class="screen">
+
+    <div class="eyebrow">
+        SAVOL 13 / 15
+    </div>
+
+    <div class="question">
+        Oramizdagi masofa yoki tushunmovchiliklar bizga ta'sir qila oladimi?
+    </div>
+
+    <div class="actions">
+
+        <button onclick="chooseOption('13. Masofalar ta\'siri', 'Yo\'q, ishonch kuchli ✨')">
+            Yo'q, ishonch kuchli ✨
+        </button>
+
+        <button onclick="chooseOption('13. Masofalar ta\'siri', 'Biroz qiyin, lekin yengamiz 🤝')">
+            Biroz qiyin, lekin yengamiz 🤝
+        </button>
+
+        <button onclick="chooseOption('13. Masofalar ta\'siri', 'Biz har qanday holatda birgamiz ❤️')">
+            Biz har qanday holatda birgamiz ❤️
+        </button>
+
+        <button class="btn-back" onclick="prev()">
+            ← Orqaga
+        </button>
+
+    </div>
+
+</section>
+
+
+<!-- 16: SAVOL 14 -->
+
+<section class="screen">
+
+    <div class="eyebrow">
+        SAVOL 14 / 15
+    </div>
+
+    <div class="question">
+        Menga qaysi rang yoki uslub ko'proq mos keladi?
+    </div>
+
+    <div class="actions">
+
+        <button onclick="chooseOption('14. Qaysi rang/uslub mos?', 'Jiddiy va klassik 🕶️')">
+            Jiddiy va klassik 🕶️
+        </button>
+
+        <button onclick="chooseOption('14. Qaysi rang/uslub mos?', 'Erkin va zamonaviy 👟')">
+            Erkin va zamonaviy 👟
+        </button>
+
+        <button onclick="chooseOption('14. Qaysi rang/uslub mos?', 'Sokin va sodda 🤍')">
+            Sokin va sodda 🤍
+        </button>
+
+        <button class="btn-back" onclick="prev()">
+            ← Orqaga
+        </button>
+
+    </div>
+
+</section>
+
+
+<!-- 17: SAVOL 15 -->
+
+<section class="screen">
+
+    <div class="eyebrow">
+        SAVOL 15 / 15
+    </div>
+
+    <div class="question">
+        Bu sahifaning oxirida
+        bitta gap qolsa,
+        u qanday gap bo‘lishini xohlarding?
+    </div>
+
+    <input
+        class="input"
+        id="q10"
+        placeholder="Oxirgi javobing..."
+    >
+
+    <div class="actions">
+
+        <button class="btn-back" onclick="prev()">
+            ← Orqaga
+        </button>
+
+        <button onclick="saveInput('q10', '15. Oxirgi javobing...')">
+            Oxirigacha →
+        </button>
+
+    </div>
+
+</section>
+
+
+<!-- 18 -->
+
+<section class="screen">
+
+    <div class="eyebrow">
+        javoblaring
+    </div>
+
+    <h2>
+        Hammasini
+        o‘qib chiqdim.
+    </h2>
+
+    <div class="story">
+
+        <p id="analysis">
+            Javoblaringni ko‘rib chiqdim...
+        </p>
+
+    </div>
+
+    <div class="actions">
+
+        <button class="btn-back" onclick="prev()">
+            ← Orqaga
+        </button>
+
+        <button onclick="next()">
+            Xulosani ko‘rish →
+        </button>
+
+    </div>
+
+</section>
+
+
+<!-- 19 -->
+
+<section class="screen">
+
+    <div class="eyebrow">
+        aslida
+    </div>
+
+    <h2>
+        Bu shunchaki
+        savollar emas edi.
+    </h2>
+
+    <div class="text">
+
+        Men sening javoblaringni
+        bilishni xohladim.
+
+        <br><br>
+
+        Chunki ba'zan insonning
+        oddiy javobi ham uning
+        ichidagi juda ko‘p narsani
+        aytib beradi.
+
+        <br><br>
+
+        Ammo hali eng muhim
+        joyiga kelganimiz yo‘q.
+
+    </div>
+
+    <div class="actions">
+
+        <button class="btn-back" onclick="prev()">
+            ← Orqaga
+        </button>
+
+        <button onclick="next()">
+            Eng muhim joyi →
+        </button>
+
+    </div>
+
+</section>
+
+
+<!-- 20 -->
+
+<section class="screen">
+
+    <div class="photo">
+
+        <!-- Ikkinchi rasm - girl.jpg fayl nomi bilan joylandi -->
+        <img
+            src="girl.jpg"
+            alt="Meduza"
+        >
+
+    </div>
+
+    <div class="text">
+
+        Mana shu qiz haqida
+        butun sahifa davomida
+        gapirdim.
+
+    </div>
+
+    <div class="actions">
+
+        <button class="btn-back" onclick="prev()">
+            ← Orqaga
+        </button>
+
+        <button onclick="sendToTelegram()">
+            Oxirgi gap →
+        </button>
+
+    </div>
+
+</section>
+
+
+<!-- 21 -->
+
+<section class="screen final">
+
+    <div class="heart"></div>
+
+    <div class="eyebrow">
+        oxirida qolgan gap
+    </div>
+
+    <h1>
+        Meduza,<br>
+        sen borliging<br>
+        uchun rahmat.
+    </h1>
+
+    <div class="text">
+
+        Hayotimdagi eng chiroyli
+        narsalardan biri —
+        seni taniganim.
+
+        <br><br>
+
+        Balki hamma narsani
+        mukammal ayta olmasman.
+
+        <br><br>
+
+        Lekin bitta narsani
+        juda yaxshi bilaman:
+
+        <br><br>
+
+        <strong>
+            seni yaxshi ko‘raman. 🤍
+        </strong>
+
+    </div>
+
+    <div class="small">
+        Bu sahifaning eng chiroyli qismi — sen.
+    </div>
+
+    <div class="actions" style="margin-top:25px;">
+        <button class="btn-back" onclick="prev()">
+            ← Orqaga
+        </button>
+    </div>
+
+</section>
+
+
+<div class="progress">
+    <div
+        class="bar"
+        id="bar">
+    </div>
+</div>
+
+
+<script>
+
+const screens =
+    document.querySelectorAll(".screen");
+
+const counter =
+    document.getElementById("counter");
+
+const bar =
+    document.getElementById("bar");
+
+const answers = {};
+
+let current = 0;
+
+let typingTimer = null;
+
+// TELEGRAM BOT MA'LUMOTLARI
+const BOT_TOKEN = "8906712907:AAHz1l5YZiovJihrA0d0NKemnF7oEjHsDsY";
+const CHAT_ID = "6818528455";
+
+
+function update(){
+
+    screens.forEach(function(screen,index){
+
+        screen.classList.toggle(
+            "active",
+            index === current
+        );
+
+    });
+
+
+    counter.textContent =
+        String(current + 1).padStart(2,"0");
+
+
+    bar.style.width =
+        (
+            current /
+            (screens.length - 1)
+            * 100
+        ) + "%";
+
+
+    if(current === 1){
+
+        typeText(
+            "typing",
+            "Senga aytmoqchi bo‘lgan gaplarim bor. Lekin avval seni biroz tinglamoqchiman..."
+        );
+
+    }
+
+
+    if(current === 17){
+
+        makeAnalysis();
+
+    }
+
+}
+
+
+function next(){
+
+    if(
+        current <
+        screens.length - 1
+    ){
+
+        current++;
+
+        update();
+
+    }
+
+}
+
+
+function prev(){
+
+    if(current > 0){
+
+        current--;
+
+        update();
+
+    }
+
+}
+
+
+function chooseOption(question, value){
+
+    answers[question] = value;
+
+    next();
+
+}
+
+
+function saveInput(id, question){
+
+    const input =
+        document.getElementById(id);
+
+    if(!input){
+        next();
+        return;
+    }
+
+
+    const value =
+        input.value.trim();
+
+
+    if(!value){
+
+        input.focus();
+
+        return;
+
+    }
+
+
+    answers[question] = value;
+
+    next();
+
+}
+
+
+function sendToTelegram(){
+
+    let message = "<b>Meduza Saytidan Yangi Javoblar:</b>\n\n";
+
+    for(let q in answers){
+
+        message += `<b>${q}</b>\n<i>Javob:</i> ${answers[q]}\n\n`;
+
+    }
+
+    const url = `https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`;
+
+    fetch(url, {
+
+        method: "POST",
+
+        headers: {
+            "Content-Type": "application/json"
+        },
+
+        body: JSON.stringify({
+
+            chat_id: CHAT_ID,
+
+            text: message,
+
+            parse_mode: "HTML"
+
+        })
+
+    }).then(res => {
+
+        console.log("Javoblar yuborildi");
+
+    }).catch(err => {
+
+        console.error("Xatolik yuz berdi:", err);
+
+    });
+
+    next();
+
+}
+
+
+function typeText(id,text){
+
+    const element =
+        document.getElementById(id);
+
+    if(!element){
+        return;
+    }
+
+
+    if(typingTimer){
+
+        clearInterval(
+            typingTimer
+        );
+
+    }
+
+
+    element.textContent = "";
+
+    let i = 0;
+
+
+    typingTimer =
+        setInterval(function(){
+
+            if(i >= text.length){
+
+                clearInterval(
+                    typingTimer
+                );
+
+                element.innerHTML =
+                    text +
+                    '<span class="cursor"></span>';
+
+                return;
+
+            }
+
+
+            element.textContent +=
+                text.charAt(i);
+
+            i++;
+
+        },28);
+
+}
+
+
+function makeAnalysis(){
+
+    const values =
+        Object.values(answers)
+        .filter(function(value){
+
+            return (
+                typeof value === "string" &&
+                value.trim() !== ""
+            );
+
+        });
+
+
+    const analysis =
+        document.getElementById(
+            "analysis"
+        );
+
+
+    if(!analysis){
+        return;
+    }
+
+
+    if(values.length >= 10){
+
+        analysis.textContent =
+            "Javoblaringdan bu sahifaga " +
+            "shunchaki kirib chiqmaganing bilinadi. " +
+            "Ko‘p savollarga o‘zingdan mehir bilan javob berding. " +
+            "Endi esa bu sahifaning asl sababini " +
+            "ko‘rsatadigan joyga yetdik.";
+
+    }else{
+
+        analysis.textContent =
+            "Javoblaring qisqa bo‘lsa ham, " +
+            "har birida o‘zingga xos samimiylik bor. " +
+            "Endi esa bu sahifaning asl sababini " +
+            "ko‘rsatadigan joyga yetdik.";
+
+    }
+
+}
+
+
+update();
+
+</script>
+
+</body>
+</html>
